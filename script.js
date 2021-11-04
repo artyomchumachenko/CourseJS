@@ -35,7 +35,7 @@ playerRight.src = 'fish_swim_right.png';
 
 class Player {
     constructor() {
-        this.x = canvas.width;
+        this.x = canvas.width / 2;
         this.y = canvas.height / 2;
         this.radius = 50;
         this.angle = 0;
@@ -52,21 +52,21 @@ class Player {
         let theta = Math.atan2(dy, dx);
         this.angle = theta;
         if (mouse.x != this.x) {
-            this.x -= dx / 30;
+            this.x -= dx / 25;
         }
         if (mouse.y != this.y) {
-            this.y -= dy / 30;
+            this.y -= dy / 25;
         }
     }
 
     draw() {
-        if (mouse.click) {
-            ctx.lineWidth = 0.2;
-            ctx.beginPath();
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-        }
+        // if (mouse.click) {
+        //     ctx.lineWidth = 0.2;
+        //     ctx.beginPath();
+        //     ctx.moveTo(this.x, this.y);
+        //     ctx.lineTo(mouse.x, mouse.y);
+        //     ctx.stroke();
+        // }
         /*ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -74,6 +74,7 @@ class Player {
         ctx.closePath();
         ctx.fillRect(this.x, this.y, this.radius, 10);*/
 
+        // Надо вспомнить
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
@@ -94,14 +95,14 @@ const player = new Player();
 const bubblesArray = [];
 const bubbleImage = new Image();
 bubbleImage.src = 'bubble_pop_frame_01.png';
-const coefHandleBubbleSize = 2.7;
+const coefHandleBubbleSize = 2.71;
 
 class Bubble {
     constructor() {
         this.x = Math.random() * canvas.width;
-        this.y = canvas.height + 100;
+        this.y = canvas.height + 200;
         this.radius = 50;
-        this.speed = Math.random() * 5 + 1;
+        this.speed = Math.random() * 5 + 1; // ?
         this.distance;
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
@@ -142,17 +143,14 @@ function handleBubbles() {
             bubblesArray.splice(i, 1);
             i--;
         } else if (bubblesArray[i].distance < bubblesArray[i].radius + player.radius) {
-            if (!bubblesArray[i].counted) {
-                if (bubblesArray[i].sound == 'sound1') {
-                    // bubblePop1.play();
-                } else {
-                    // bubblePop2.play();
-                }
-                score++;
-                bubblesArray[i].counted = true;
-                bubblesArray.splice(i, 1);
-                i--;
+            if (bubblesArray[i].sound == 'sound1') {
+                bubblePop1.play();
+            } else {
+                bubblePop2.play();
             }
+            score++;
+            bubblesArray.splice(i, 1);
+            i--;
         }
     }
 }
@@ -190,10 +188,10 @@ enemyImage.src = 'enemy2.png';
 
 class Enemy {
     constructor() {
-        this.x = canvas.width - 200;
+        this.x = canvas.width + 200;
         this.y = Math.random() * (canvas.height - 150) + 90;
         this.radius = 60;
-        this.speed = Math.random() * 2 + 2;
+        this.speed = Math.random() * 5 + 2;
         this.frame = 0;
         this.frameX = 0;
         this.frameY = 0;
