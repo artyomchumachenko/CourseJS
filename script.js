@@ -28,11 +28,34 @@ canvas.addEventListener('mouseup', function () {
     mouse.click = false;
 })
 
+function refreshState(ts) {
+    if (gameFrame % 5 == 0) {
+        ts.frame++;
+        if (ts.frame >= 12) {
+            ts.frame = 0;
+        }
+        if (ts.frame == 3 || ts.frame == 7 || ts.frame == 11) {
+            ts.frameX = 0;
+        } else {
+            ts.frameX++;
+        }
+        if (ts.frame < 3) {
+            ts.frameY = 0;
+        } else if (ts.frame < 7) {
+            ts.frameY = 1;
+        } else if (ts.frame < 11) {
+            ts.frameY = 2;
+        } else {
+            ts.frameY = 0;
+        }
+    }
+}
+
 // Player
 const playerLeft = new Image();
-playerLeft.src = 'fish_swim_left.png';
+playerLeft.src = 'playerCopyLeft.png';
 const playerRight = new Image();
-playerRight.src = 'fish_swim_right.png';
+playerRight.src = 'playerCopyRight.png';
 
 class Player {
     constructor() {
@@ -58,6 +81,9 @@ class Player {
         if (mouse.y != this.y) {
             this.y -= dy / 25;
         }
+
+        // Refresh State Player
+        refreshState(this);
     }
 
     draw() {
@@ -68,6 +94,7 @@ class Player {
         //     ctx.lineTo(mouse.x, mouse.y);
         //     ctx.stroke();
         // }
+
         /*ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -216,6 +243,10 @@ class Enemy {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();*/
+
+        // ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,
+        //     this.spriteHeight, this.x - 60, this.y - 70, this.spriteWidth / 3, this.spriteHeight / 3);
+
         ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,
             this.spriteHeight, this.x - 60, this.y - 70, this.spriteWidth / 3, this.spriteHeight / 3);
     }
@@ -231,26 +262,9 @@ class Enemy {
                 this.speed = Math.random() * 5 + 2;
             }
         }
-        if (gameFrame % 5 == 0) {
-            this.frame++;
-            if (this.frame >= 12) {
-                this.frame = 0;
-            }
-            if (this.frame == 3 || this.frame == 7 || this.frame == 11) {
-                this.frameX = 0;
-            } else {
-                this.frameX++;
-            }
-            if (this.frame < 3) {
-                this.frameY = 0;
-            } else if (this.frame < 7) {
-                this.frameY = 1;
-            } else if (this.frame < 11) {
-                this.frameY = 2;
-            } else {
-                this.frameY = 0;
-            }
-        }
+
+        // Refresh State Enemies
+        refreshState(this);
 
         // collision with player
         const dx = this.x - player.x;
