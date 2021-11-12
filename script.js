@@ -1,4 +1,4 @@
-// Canvas setup
+// Canvas
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 800;
@@ -9,8 +9,9 @@ let gameFrame = 0;
 ctx.font = '40px Georgia';
 let gameSpeed = 1;
 let gameOver = false;
+let nextGame = false;
 
-// Mouse Interactivity
+// Mouse
 let canvasPosition = canvas.getBoundingClientRect();
 
 const mouse = {
@@ -157,29 +158,40 @@ function handleBubbles() {
 
 // Repeating backgrounds
 const background = new Image();
-background.src = 'cloud_background1.png';
-// const sunBackground = new Image();
-// background.src = 'sun.png';
+const backgroundMirror = new Image();
+background.src = 'ocean1.jpg';
+backgroundMirror.src = 'ocean2.jpg';
 
 const BG = {
     x1: 0,
-    x2: canvas.width,
-    y: -200,
+    y: 0,
+    width: canvas.width,
+    height: canvas.height,
+}
+
+const BGM = {
+    x1: canvas.width,
+    y: 0,
     width: canvas.width,
     height: canvas.height,
 }
 
 function handleBackground() {
     BG.x1 -= gameSpeed;
-    if (BG.x1 < -BG.width) {
+    BGM.x1 -= gameSpeed;
+
+    if (BG.x1 <= -BG.width) {
         BG.x1 = BG.width;
+        // console.log("Левый край main зашел за -width");
     }
-    BG.x2 -= gameSpeed;
-    if (BG.x2 < -BG.width) {
-        BG.x2 = BG.width;
+
+    if (BGM.x1 <= -BG.width) {
+        BGM.x1 = BGM.width;
+        // console.log("Левый край миррора зашел за -width");
     }
+
     ctx.drawImage(background, BG.x1, BG.y, BG.width, BG.height);
-    ctx.drawImage(background, BG.x2, BG.y, BG.width, BG.height);
+    ctx.drawImage(backgroundMirror, BGM.x1, BGM.y, BGM.width, BGM.height);
 }
 
 // Enemies
@@ -213,7 +225,11 @@ class Enemy {
         if (this.x < 0 - this.radius * 2) {
             this.x = canvas.width + 200;
             this.y = Math.random() * (canvas.height - 150) + 90;
-            this.speed = Math.random() * 2 + 2;
+            if (score > 3) { // add lvl and change msEnemies
+                this.speed = Math.random() * 5 + 4;
+            } else {
+                this.speed = Math.random() * 5 + 2;
+            }
         }
         if (gameFrame % 5 == 0) {
             this.frame++;
@@ -254,8 +270,8 @@ function handleEnemies() {
 }
 
 function handleGameOver() {
-    ctx.fillStyle = 'white';
-    ctx.fillText('GAME OVER, you reached score ' + score, 100, 300);
+    let questionToNextGame = "Хотите начать сначала?";
+    nextGame = confirm("Your score = " + score + "\n" + questionToNextGame);
     gameOver = true;
 }
 
@@ -273,6 +289,10 @@ function animate() {
     gameFrame++;
     if (!gameOver) {
         requestAnimationFrame(animate);
+    } else if (nextGame) {
+        location.reload();
+    } else if (!nextGame) {
+        window.close();
     }
 }
 
