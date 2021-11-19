@@ -1,8 +1,8 @@
 // Canvas
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
-canvas.width = 800;
-canvas.height = 500;
+canvas.width = innerWidth;
+canvas.height = innerHeight - 1;
 
 let score = 0;
 let gameFrame = 0;
@@ -95,12 +95,12 @@ class Player {
         //     ctx.stroke();
         // }
 
-        /*ctx.fillStyle = 'red';
+        ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
-        ctx.fillRect(this.x, this.y, this.radius, 10);*/
+        ctx.fillRect(this.x, this.y, this.radius, 10);
 
         // Надо вспомнить
         ctx.save();
@@ -144,12 +144,13 @@ class Bubble {
     }
 
     draw() {
-        /*ctx.fillStyle = 'orange';
+        ctx.fillStyle = 'orange';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
-        ctx.stroke();*/
+        ctx.stroke();
+
         ctx.drawImage(bubbleImage, this.x - 68, this.y - 67, this.radius * coefHandleBubbleSize, this.radius * coefHandleBubbleSize);
     }
 }
@@ -239,13 +240,10 @@ class Enemy {
     }
 
     draw() {
-        /*ctx.fillStyle = 'red';
+        ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();*/
-
-        // ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,
-        //     this.spriteHeight, this.x - 60, this.y - 70, this.spriteWidth / 3, this.spriteHeight / 3);
+        ctx.fill();
 
         ctx.drawImage(enemyImage, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,
             this.spriteHeight, this.x - 60, this.y - 70, this.spriteWidth / 3, this.spriteHeight / 3);
