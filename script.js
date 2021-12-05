@@ -10,10 +10,6 @@ ctx.font = '40px Georgia';
 let gameSpeed = 1;
 let gameOver = false;
 let nextGame = false;
-const enemy1 = new Enemy();
-const enemy2 = new Enemy();
-const enemy3 = new Enemy();
-const enemy4 = new Enemy();
 var spawnSecondEnemy = false;
 var levelTwo = false;
 var levelThree = false;
@@ -277,6 +273,11 @@ class Enemy {
         }
     }
 }
+
+const enemy1 = new Enemy();
+const enemy2 = new Enemy();
+const enemy3 = new Enemy();
+const enemy4 = new Enemy();
 
 function handleEnemies() {
     enemy1.draw();
