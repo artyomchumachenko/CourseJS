@@ -2,7 +2,7 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = innerWidth;
-canvas.height = innerHeight - 1;
+canvas.height = innerHeight - 1; // delete scroll line
 
 let score = 0;
 let gameFrame = 0;
